@@ -87,8 +87,36 @@ Then target group was not healthy, and we fixed this issue. To fix tagret group 
 8) Sonrada Route 53 den bizim domain için alias lı record ekledik. Bu record u eklerken
 
    - Record type = A
-   - Route traffic
+   - Route traffic to = Alias to Application and Classic Load Balancer
+   - Europe (London) eu-west-2
+   - Ve de dual stack DNS name seçtik. Bunu sonundaki 929 rakamından Load Balancer a eşleştirdik. Load Balancer DNS name de yazana göre bunu seçtik.
 
+Sonra bu record un status un pending den active e geçmesi için bekledik. 
+On Route 53, I just associate this domain with ALB. Alias is masking
+
+**ALB hiding everything in front of internet
+**Type A can be ip or can be domain name. CNAME is text record, can be verified.
+**For TXT, for nsrecord, for email verification belongs to domain. We choose CNAME mostly, for SSL, we choose CNAME.
+
+A record can host the host name to one or more ip address. But CNAME can maps hostname to another hostname. If we have two domain and we want to map, we can use CNAME
+ if we have one domain and one ip we want to map, we have to use A record.
+ 
+ **A record maps a hostname to one or more IP address while the CNAME record maps a hostname to another hostname.
+ 
+ Port 80, nginx is running, port 443 keycloak is running. If we choose port 443 in healthcheck, it is not responding to target group. Because application is running internally.
+ 
+ Ourt healthcheck is working over nginx (port 80). Our traffic is coming from port 443, and it is going to 443 to 80.
+ 
+ **/Port 443 is not responding to the target group. Therefore Afzal updated port 443 to port 80 in heatlth check setting. On port 80, nginx is running.
+ 
+ **Nginx configine bakarsak, port 443 is not doing anything directly. It is proxy port.. It is related to SSL, proxy etc. Port 443 is not directly doing anything. This port is not available directly. It is the proxy port. It is a way to access port 443 only with proxy.
+ 
+ **Sonra Afzal la görüşmelerimizden sonra ALB ye gidip port 80 yi port 443 e yönlendiren bir listener rule u ekledik.
+ 
+ **If anyone wants to access port 80, it will automatically redirect to port 443. We are not using nginx anymore. We are using ALB instead of nginx for routing purposes.
+ 
+To summarize, ALB is amazing. It is useful for autoscaling. With target group, we can use 5 machine.
+   
 
 
 
