@@ -115,7 +115,7 @@ A record can host the host name to one or more ip address. But CNAME can maps ho
  
  **If anyone wants to access port 80, it will automatically redirect to port 443. We are not using nginx anymore. We are using ALB instead of nginx for routing purposes.
  
-To summarize, ALB is amazing. It is useful for autoscaling. With target group, we can use 5 machine.
+To summarize, ALB is amazing. It is useful for autoscaling. With target group, we can use 5 machine. ALB will route the traffix to 5 machines. Even with ALB, we are using security groups as well.
    
 
 
